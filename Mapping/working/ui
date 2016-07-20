@@ -1,0 +1,18 @@
+library(shiny)
+library(leaflet)
+
+shinyUI(fluidPage(
+  titlePanel("Triangle Map"),
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("Population type", 
+                  label = "Choose population:",
+                  choices = tot_pop,
+                  #c(DP0010001,DP0010039,perc)
+                  selected = tot_pop
+      )),
+    
+    mainPanel (leafletOutput("geojson","100%",300))
+    
+  )
+))
