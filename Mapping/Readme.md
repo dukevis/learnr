@@ -10,9 +10,13 @@ file and you will need to set the projection.
 
 *VIEW MAP*
 
-Use plot() function to view the map.  The plot() function will display the shapefile with no background.  If a background map is needed, use ggmap or leaflet.    
+Use plot() function to view the map.  The plot() function will display the shapefile with no background.  If a background map is needed, use ggmap or leaflet.
 
-Use ggmap and RgoogleMaps packages to put shapefiles over imagery quickly.  First set qmap (quick map plot) to location, zoom level, and the type of map you want.  Finally add the geom_polygon function.  *Code for both ggmap and plot() examples are in "Shapefiles.R" script.
+Use ggmap and RgoogleMaps packages to put shapefiles over imagery quickly.  First geocode the center of the map using geocode() command.  Then use get_map() command 
+
+*CLIP TWO SHAPEFILE LAYERS*
+
+Import both shapefile layers.  View the extents of both layers using bbox() function.  If need be, use the spTransform function to project one layer to the other layer.  Create new object and set the newly projected layer to the polygon.  **Code is in the "Clip.R" script.
 
 #CSV Files
 In order to add xy information from a csv file, you need to have x,y coordinates in the csv file, separating x and y into two columns.  Import csv into R using read.csv("file location and extension")
@@ -23,7 +27,7 @@ There are two ways to map csv files into points on a map: Using ggmap or using l
 
 *Using leaflet:*
 
-  1. Read the csv file and load the leaflet library.
+  1. Read the csv file and load the leaflet library
   2. Use cbind function to combine lat/long column.  A new data table will be created
   3. Create a Spatial Points Data Frame and define the projection.  Use SPDF function set the coordinates to the variable name created in step 2, set the data to the csv file and proj4string to WGS84.
   4. Use the spTransform function to project to NAD83 UTM17.
@@ -107,12 +111,15 @@ CSV file of UNC schools were created by looking up individual schools and obtain
 
 The raster file used in all the raster examples were obtained from the [Natural Resources Conservation Service GeoSpatial Gateway][3].  It was obtained at the state level, 1981-2010 Annual Average Raster Precip and Temp (Climate PrismRaster dataset).
 
-Hurricane data was obtained from the [NOAA National Centers for Environmental Information][4] 
+Hurricane data was obtained from the [NOAA National Centers for Environmental Information][4].
+
+State polygon files were obtained from the [United States Census Bureau Tiger/Line Shapefiles.][7]
 
 [1]: http://www.srh.noaa.gov/srh/ssd/mapping/
 [2]: http://www.srh.noaa.gov/srh/ssd/mapping/
 [3]: https://gdg.sc.egov.usda.gov/GDGHome.aspx
 [4]: http://www.ncdc.noaa.gov/ibtracs/index.php?name=ibtracs-data
+[7]: https://www.census.gov/geo/maps-data/data/tiger-line.html
 
 
 #GeoJSON Files
@@ -185,4 +192,3 @@ To set a new projection:
 #Shiny
 
 ![shiny_points](https://cloud.githubusercontent.com/assets/20543318/17521928/2d4a8404-5e23-11e6-9b13-aeb6651ff7eb.JPG)
-
