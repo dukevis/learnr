@@ -162,3 +162,50 @@ To import GeoJSON files in leaflet use readLines function.  **Code is available 
 Users can use many different types of basemaps in R.  For a full list of available basemaps, go to the ["Leaflet extras github"][5] webpage.
 
 [5]: http://leaflet-extras.github.io/leaflet-providers/preview/index.html
+
+#Projections in R
+To view detailed Datum information type the following command in R.  This will show you what the abbreviations mean: projInfo(type = "datum")
+
+To view detailed Projection information type the following command in R: projInfo(type = "proj")
+
+To view detailed Ellipsoid information type the following command in R: projInfo(type = "ellps")
+
+Obtain EPSG codes from the [EPSG Geodetic Parameter Registry][6] website.
+[6]: http://www.epsg-registry.org
+
+You will need sp and rgdal libraries to transform coordinate systems.  Here are common codes used in the United States and North Carolina.
+ - WGS84 = EPSG: 4326
+ - NAD83 = EPSG: 4269
+ - NAD83 Zone 17 = EPSG: 26917
+
+
+When you view the projection information, you will see (if necessary) information including:
+  1. Projection (Latitude/Longitude, UTM/Zone, etc.)
+  2. Datum
+  3. Units
+  4. Ellipsoid
+ 
+Once the shapefile is imported use the proj4string([variable]) fucntion or print(proj4string([variable])) to read the projection.  If there is no projection or since readShapePoly will not read the projection file, you will get a result of [1] NA.
+
+THREE WAYS TO SET PROJECTION
+  1. Use proj4string([variable]) <- "+proj=utm +zone=14 +datum=WGS84 +units=m" function
+  2. Use proj4string([variable]) <- CRS(+init=epsg:32119") function
+  3. Or create a new variable using spTransform function.  For example: shpData <- spTransform(states, CRS("+proj=longlat +datum=WGS84")) 
+
+**You can't use the third way if no projection is set...you'd need to use the first method.**
+
+You can also remove a projection using proj4string([variable]) <- NA_character_
+
+To convert between different mapping projections and datums use the spTransform() command.
+
+
+RASTER PROJECTION INFORMATION
+
+Use the projection([variable]) function to view projection
+
+To set a new projection:
+
+  1. Create a new variable and set it to information
+  2. use the projectRaster() function
+
+**Code is in the "Rasters.R" script
