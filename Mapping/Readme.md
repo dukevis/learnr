@@ -183,4 +183,4 @@ Shiny allows the user to interact with the leaflet.  To view detailed code, see 
 
 ![shiny_points](https://cloud.githubusercontent.com/assets/20543318/17521928/2d4a8404-5e23-11e6-9b13-aeb6651ff7eb.JPG)
 
-By: Jena Happ
+By: Jena 
