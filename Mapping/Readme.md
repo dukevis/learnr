@@ -76,8 +76,7 @@ pal <- colorNumeric(c("#0C2C84", "#41B6C4", "#FFFFCC"), values(*object*), na.col
 Now that there's a object named pal for the color scheme we can add this to leaflet.  First add leaflet() and tiles() separated by %>% operator.  Then add the raster using the "addRasterImage()."  Within addRasterImage, you'll need to first specify the data, colors = *ojbect from color scheme above*, and opacity.  Then you can add legend if you'd like.  For example:
 
 leaflet() %>% addTiles() %>%  addRasterImage(climate, colors = pal, opacity = 0.8) %>%  
-
-    addLegend(pal = pal, values = values(climate), title = "Annual Rain")
+                              addLegend(pal = pal, values = values(climate), title = "Annual Rain")
 
 *You will get a result that looks like this.  Code is in "Leaflet.R" script under "RASTER LEAFLET" section. 
 ![raster_leaflet](https://cloud.githubusercontent.com/assets/20543318/17521927/2b5cd548-5e23-11e6-9561-62258babb455.jpeg)
