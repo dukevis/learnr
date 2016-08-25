@@ -23,7 +23,7 @@ First import both shapefile layers and view the extents of both layers using bbo
 
 *MERGE TWO SHAPEFILE LAYERS TOGETHER*
 
-You will need the rgdal, raster, rgeos libraries.  First import both shapefiles using the readOGR() function.  Finally, use the union function (for example: union(*shp1*, *shp2*)) and plot the result.  **Code is available in the ["Merge.R"][15] script.
+You will need the rgdal, raster, rgeos libraries.  First import both shapefiles using the readOGR() function.  Finally, use the union function (for example: union(*shp1*, *shp2*)) and plot the result.  **Code is available in the ["Merge.R"][23] script.
 
 *JOIN SHAPEFILE AND CSV ATTRIBUTES*
 
@@ -131,7 +131,7 @@ To convert a shapefile to a GeoJSON file in R, first load tmap and geojsonio lib
    2. Plot "shp" object using qtm expression.  qtm is the tmap's version of plotting a map. For example:   qtm(shp)
    3. Use the geojson_write() function with the following code in the function (*current file extension*,  file = "*file path*").  For example geojson_write(shp, file = "D:/tmp/shp.geojson")
 
-To import GeoJSON files in leaflet use the readLines() function.  **Code for GeoJSON conversion is available in ["Shapefile2GeoJSON.R"][17] script and the GeoJSON example in leaflet is available in the "GeoJSON.R" script.
+To import GeoJSON files in leaflet use the readLines() function.  **Code for GeoJSON conversion is available in ["Shapefile2GeoJSON.R"][17] script and the GeoJSON example in leaflet is available in the ["GeoJSON.R"][24] script.
 
 #Basemaps
 Users can use many different types of basemaps in R.  For a full list of available basemaps, go to the [Leaflet extras github][5] webpage.  **For examples of using different basemaps, see the ["Basemaps.R"][12] code.
@@ -196,15 +196,16 @@ By: Jena
 [6]: http://www.epsg-registry.org
 [7]: https://www.census.gov/geo/maps-data/data/tiger-line.html
 [9]: https://www.census.gov/geo/maps-data/data/tiger-data.html
-[11]: https://github.com/jlhapp/Basic_Mapping/blob/master/AttributeJoin
-[12]: https://github.com/jlhapp/Basic_Mapping/blob/master/Basemaps.R
-[13]: https://github.com/jlhapp/Basic_Mapping/blob/master/Clip
-[14]: https://github.com/jlhapp/Basic_Mapping/blob/master/Leaflet.R
-[15]: https://github.com/jlhapp/Basic_Mapping/blob/master/Merge
-[16]: https://github.com/jlhapp/Basic_Mapping/blob/master/Rasters.R
-[17]: https://github.com/jlhapp/Basic_Mapping/blob/master/Shapefile2GeoJSON.R
-[18]: https://github.com/jlhapp/Basic_Mapping/blob/master/Shapefiles.R
-[19]: https://github.com/jlhapp/Basic_Mapping/blob/master/Spatial_Join
-[20]: https://github.com/jlhapp/Basic_Mapping/blob/master/csv.R
-[21]: https://github.com/jlhapp/Basic_Mapping/blob/master/csv2leaflet.R
+[11]: https://github.com/dukevis/learnr/blob/master/Mapping/AttributeJoin
+[12]: https://github.com/dukevis/learnr/blob/master/Mapping/Basemaps
+[13]: https://github.com/dukevis/learnr/blob/master/Mapping/Clip
+[14]: https://github.com/dukevis/learnr/blob/master/Mapping/Leaflet
+[16]: https://github.com/dukevis/learnr/blob/master/Mapping/Rasters
+[17]: https://github.com/dukevis/learnr/blob/master/Mapping/Shapefile2GeoJSON
+[18]: https://github.com/dukevis/learnr/blob/master/Mapping/Shapefiles
+[19]: https://github.com/dukevis/learnr/blob/master/Mapping/Spatial_Join
+[20]: https://github.com/dukevis/learnr/blob/master/Mapping/csv
+[21]: https://github.com/dukevis/learnr/blob/master/Mapping/csv2leaflet
 [22]: https://duke.box.com/v/LearnR
+[23]: https://github.com/dukevis/learnr/blob/master/Mapping/Merge.R
+[24]: https://github.com/dukevis/learnr/blob/master/Mapping/GeoJSON
