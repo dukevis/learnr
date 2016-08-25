@@ -11,8 +11,12 @@ library(ggplot2)
 ####1. Open a shapefile using rgdal
 #Name a variable "Marine" and use "readOGR expression.  dsn = data source
 #name and should be set to your folder with the shapefile.  layer = the 
-#name of the layer.
-Marine <- readOGR(dsn = "D:/LearnR/BasicMapping/WeatherStations.shp", layer = "WeatherStations")
+#name of the layer. 
+    #A.  Absolute path.  Define exactly the location of the shapefile
+    Marine <- readOGR(dsn = "D:/LearnR/BasicMapping/WeatherStations.shp", layer = "WeatherStations")
+    #B.  Relative path.  If you have a folder named data within your project, all you have
+    #    to write is "data/SHAPEFILE"
+    Marine2 <- readOGR(dsn = "data/WeatherStations.shp", layer = "WeatherStations")
 
 #Read "Marine's" projection using proj4string
 proj4string(Marine)
@@ -43,7 +47,8 @@ library(maptools)
 #Open states shapefile (polygons)
 #Points readShapePoints()
 #Lines readShapeLines()
-states <- readShapePoly("D:\\DesktopStuff\\R\\Shapefiles\\UnitedStates.shp")
+#states <- readShapePoly("D:\\DesktopStuff\\R\\Shapefiles\\UnitedStates.shp")
+states <- readShapePoly("data\\UnitedStates.shp")
 
 #Gets a summary of the data.  Use summary(name of shapefile)
 summary(states)
@@ -68,27 +73,13 @@ print(proj4string(shpData))
 #Make a simple map of the states.  Plot will display in the lower
 #right-hand corner (next to files, package, etc.)
 plot(states, border="black")
-###########################Shapefiles########################################
-############################################################################
 
 
+#Re-add states polygon shapefile
+states2 <- readShapePoly("data\\UnitedStates.shp")
 
-############################################################################
-#######################Convert shapefile to GeoJSON############################
-#Can convert a shapefile to a GeoJSON file using QGIS.  Right click on layer
-#and select Save As.  Change the file type to GeoJSON.
+#Set the quick map plot (qmap) and add the polygons
+qmap("north carolina", zoom = 6, maptype = "satellite") + geom_polygon(aes(x = long, y = lat, group = group), data = states2, colour = "white", fill = "black", alpha = .4, size = .3) 
 
-#For R script:
-#Use the shapefile of weather stations 
-library(tmap) # to read shapefile
-library(geojsonio) # to write geojson
-
-#Name variable shp and use read_shape 
-shp = read_shape("D:/LearnR/BasicMapping/WeatherStations.shp")
-#plot the shp data
-qtm(shp)
-#use the geojson_write expression followed by ([current file extension],
-#file = "[file path]")
-geojson_write(shp, file = "D:/tmp/shp.geojson")
-#######################Convert shapefile to GeoJSON############################
+###############################Shapefiles########################################
 ############################################################################
