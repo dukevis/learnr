@@ -4,10 +4,11 @@
 library(rgdal)
 
 #Import point Hurricane data
-Hurricane <- readOGR(dsn = "D:/LearnR/BasicMapping/Hurricane.shp", layer = "Hurricane")
+#Hurricane <- readOGR(dsn = "D:/LearnR/BasicMapping/Hurricane.shp", layer = "Hurricane")
+Hurricane <- readOGR(dsn = "data/Hurricane.shp", layer = "Hurricane")
 
 #Import states polygon
-states <- readOGR(dsn = "D:\\DesktopStuff\\R\\Shapefiles\\UnitedStates.shp", layer = "UnitedStates")
+states <- readOGR(dsn = "data\\UnitedStates.shp", layer = "UnitedStates")
 
 #View the extents for both layers
 bbox(Hurricane)
@@ -28,3 +29,8 @@ HurricaneCL <- HurricanePrj[states, ]
 
 #View the new layer to verify the clip worked.
 plot(HurricaneCL)
+
+#Write newly created clipped hurricane points to a shapefile.  Set the object to the name of
+#file in this script, set the dsn to the folder you want to put the new shapefile, name the new
+#shapefile using the layer object, and set the driver to "ESRI Shapefile."
+writeOGR(obj = HurricaneCL, dsn = "tempdir", layer = "HurricaneCL", driver = "ESRI Shapefile")
