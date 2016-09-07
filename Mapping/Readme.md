@@ -28,7 +28,7 @@
 # Basic Mapping
 *WHAT ARE SHAPEFILES?*
 
-Shapefiles are spatial files with attribute information and they can be points, lines, or polygons.  For instance, if you have a United States polygon shapefile, each state will have information within the attribute table.
+Shapefiles are spatial files with attribute information and they can be points, lines, or polygons.  For instance, if you have a United States polygon shapefile, each state will have information (i.e. name, abbreviation, FIPS code, etc.) within the attribute table.
 
 ![shapefile types](https://cloud.githubusercontent.com/assets/20543318/18320380/90b35f9e-74f7-11e6-9a41-774b483c555f.jpg)
 
@@ -96,6 +96,14 @@ There are two ways to map csv files into points on a map: using ggmap or using l
 [Back to top][49]
 
 #Rasters
+*WHAT ARE RASTERS?*
+
+In short, rasters are cells that have values and are arranged into rows and columns.  Examples of rasters include scanned maps, imagery data, and surface maps (the example that is used in this repository).
+
+![intro to rasters](https://cloud.githubusercontent.com/assets/20543318/18321112/a852883e-74fa-11e6-9177-358f5e1ec00d.jpg)
+
+*IMPORT A RASTER*
+
 Use either the raster library or the sp package to import raster data.
 
 1. RASTER LIBRARY
