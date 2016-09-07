@@ -1,6 +1,37 @@
-[For Duke University users click here and follow the instructions in the pdf file] [22]
+#How to use this repository
+  1.  If you are a Duke University user, [click here and follow the instructions in the pdf file] [22].  All other users can view the scripts and the readme file.
+  2.  This repostiory is intedned for new R and GIS users.
+  3.  Scroll through the readme file or click on a section you are interested in within the Table of Contents to read a description of the scripts.
 
+#Table of Contents:
+  1.  [Basic Mapping][42] - learn how what a shapefile is, how to import a shapefile, view a map, clip a shapefile, merge two shapefiles together, and perform joins(both spatial and attribute).
+  2.  [CSV Files][40] - import a csv with xy coordinates and view in leaflet or in a plot.
+  3.  [Rasters][43] - learn what a raster is, import a raster, define a color palette for the raster, and view in leaflet.
+  4.  [Mapping in Leaflet][44] - add various mapping file types to a leaflet.
+  5.  [GeoJSON files][46] - learn the benefits of using GeoJSON files and how to add them to leaflet.
+  6.  [Basemaps][47] - add basemaps from Leaflet's github webpage.
+  7.  [Projections in R][48] - learn the terminology of projections in R and set the projections.
+  8.  [Shiny][41] - brief introduction to a Shiny application with a Leaflet map.
+  9.  [Data sources used][45] - links to the raw data sources that are used in this repository.
+
+[40]: https://github.com/dukevis/learnr/tree/master/Mapping#csv-files
+[41]: https://github.com/dukevis/learnr/tree/master/Mapping#shiny
+[42]: https://github.com/dukevis/learnr/tree/master/Mapping#basic-mapping
+[43]: https://github.com/dukevis/learnr/tree/master/Mapping#rasters
+[44]: https://github.com/dukevis/learnr/tree/master/Mapping#mapping-in-leaflet
+[45]: https://github.com/dukevis/learnr/tree/master/Mapping#data-sources-used
+[46]: https://github.com/dukevis/learnr/tree/master/Mapping#geojson-files
+[47]: https://github.com/dukevis/learnr/tree/master/Mapping#basemaps
+[48]: https://github.com/dukevis/learnr/tree/master/Mapping#projections-in-r
+[49]: https://github.com/dukevis/learnr/tree/master/Mapping#table-of-contents
+  
 # Basic Mapping
+*WHAT ARE SHAPEFILES?*
+
+Shapefiles are spatial files with attribute information and they can be points, lines, or polygons.  For instance, if you have a United States polygon shapefile, each state will have information within the attribute table.
+
+![shapefile types](https://cloud.githubusercontent.com/assets/20543318/18320380/90b35f9e-74f7-11e6-9a41-774b483c555f.jpg)
+
 *IMPORT SHAPEFILE*
 
 Use rgdal package and the readOGR function to import a shapefile into R.  The readOGR function will read the projection file.
@@ -33,6 +64,8 @@ You will need the sp library.  First import the shapefile and csv files using re
 
 Import the rgdal library and both shapefiles.  Use the over() function to return the rows for the column you specify.  Then join back the new data created from the over() function by creating a new variable with a new column that you create.  **See ["Spatial_Join.R"][19] script to view an example.
 
+[Back to top][49]
+
 #CSV Files
 In order to add xy information from a csv file, you need to have x, y coordinates in the csv file, separating the x and y coordinates into two columns.  Import the csv file into R using read.csv("file location and extension").  To view all of the data and column headings, use the print() function.  To view the first three rows of data use the head function.  For example: head(*object name*, 3)
 
@@ -59,6 +92,8 @@ There are two ways to map csv files into points on a map: using ggmap or using l
 
 **Code is on ["csv.R"][20] script and you will get a result like this:
 ![csv2](https://cloud.githubusercontent.com/assets/20543318/17521919/239a0ccc-5e23-11e6-8ae2-2b9e2a657216.jpeg)
+
+[Back to top][49]
 
 #Rasters
 Use either the raster library or the sp package to import raster data.
@@ -91,6 +126,8 @@ leaflet() %>% addTiles() %>%  addRasterImage(climate, colors = pal, opacity = 0.
 *You will get a result that looks like this.  Code is available in the ["Leaflet.R"][14] script under "RASTER LEAFLET" section. 
 ![raster_leaflet](https://cloud.githubusercontent.com/assets/20543318/17521927/2b5cd548-5e23-11e6-9561-62258babb455.jpeg)
 
+[Back to top][49]
+
 #Mapping in Leaflet
 This section covers shapefiles; for rasters in leaflet, see RASTER.  There are many ways to display a leaflet map.  If you want a simple map write this: leaflet() %>% addPolylines(data = *object*)
 
@@ -110,16 +147,7 @@ To save the leaflet to an html file, click Export in the Viewer window within R,
 
 ![hurricane_line_leaflet](https://cloud.githubusercontent.com/assets/20543318/17524043/d9eb5a6a-5e2a-11e6-949b-a2e544777bce.jpeg)
 
-#Data Sources used
-The tornado tracks (lines) were downloaded from [NOAA Southern Region Headquarters][1].   The files were then converted from kml to a shapefile using the "KML to Layer" tool in ArcGIS for Desktop.  The tornado storm reports (points) were downloaded from [NOAA Southern Region Headquarters][2].
-
-The csv file of UNC schools were created by looking up individual schools and geocoding the addresses in ArcGIS for Desktop.  Once a shapefile was created, the xy coordinates were created using the "Add XY Coordinates" tool in ArcGIS for Desktop.
-
-The raster file used in all the raster examples were obtained from the [Natural Resources Conservation Service GeoSpatial Gateway][3].  It was obtained at the state level, 1981-2010 Annual Average Raster Precip and Temp (Climate PrismRaster dataset).
-
-Hurricane data was obtained from the [NOAA National Centers for Environmental Information][4].
-
-State polygon shapefiles were obtained from the [United States Census Bureau Tiger/Line Shapefiles.][7]  The American Community Survey data was downloaded from the United States Census Bureau using the [American Community Survey 5-Year Estimates - Geodatabase Format][9].  Once the geodatabase was imported into ArcGIS for Desktop, the shapefile and table was exported to a shapefile and a csv file.
+[Back to top][49]
 
 #GeoJSON Files
 
@@ -133,8 +161,12 @@ To convert a shapefile to a GeoJSON file in R, first load tmap and geojsonio lib
 
 To import GeoJSON files in leaflet use the readLines() function.  **Code for GeoJSON conversion is available in ["Shapefile2GeoJSON.R"][17] script and the GeoJSON example in leaflet is available in the ["GeoJSON.R"][24] script.
 
+[Back to top][49]
+
 #Basemaps
 Users can use many different types of basemaps in R.  For a full list of available basemaps, go to the [Leaflet extras github][5] webpage.  **For examples of using different basemaps, see the ["Basemaps.R"][12] code.
+
+[Back to top][49]
 
 #Projections in R
 To view detailed Datum information type the following command in R.  This will show you what the abbreviations mean: projInfo(type = "datum")
@@ -178,6 +210,8 @@ To set a new projection for rasters:
 
 **Code is in the ["Rasters.R"][16] script
 
+[Back to top][49]
+
 #Shiny
 
 Shiny allows the user to interact with the leaflet.  To view detailed code, see the "Tornado_Shiny.R" (for points) and "Tornado_Shiny_Lines.R" (for polylines).  Both examples use the bootstrapPage() but another common type of page is the fluidPage().  You can write a Shiny app either in two R scripts (named: ui.R and server.R) or in one app with the ui and server written in the script.  Both examples use one script.
@@ -185,6 +219,19 @@ Shiny allows the user to interact with the leaflet.  To view detailed code, see 
 When using leaflet with shiny app, you need "leafletOutput" in the ui.R file and renderLeaflet() in the server.R file.  Users will also need the leafletProxy() function to modify a map that's already running in a page.  Another function you must have in Shiny is the reactive() function.  This will update when the user changes the user interface.  The "Tornado_Shiny.R" script will give you a user interface like this:
 
 ![shiny_points](https://cloud.githubusercontent.com/assets/20543318/17521928/2d4a8404-5e23-11e6-9b13-aeb6651ff7eb.JPG)
+
+#Data Sources used
+The tornado tracks (lines) were downloaded from [NOAA Southern Region Headquarters][1].   The files were then converted from kml to a shapefile using the "KML to Layer" tool in ArcGIS for Desktop.  The tornado storm reports (points) were downloaded from [NOAA Southern Region Headquarters][2].
+
+The csv file of UNC schools were created by looking up individual schools and geocoding the addresses in ArcGIS for Desktop.  Once a shapefile was created, the xy coordinates were created using the "Add XY Coordinates" tool in ArcGIS for Desktop.
+
+The raster file used in all the raster examples were obtained from the [Natural Resources Conservation Service GeoSpatial Gateway][3].  It was obtained at the state level, 1981-2010 Annual Average Raster Precip and Temp (Climate PrismRaster dataset).
+
+Hurricane data was obtained from the [NOAA National Centers for Environmental Information][4].
+
+State polygon shapefiles were obtained from the [United States Census Bureau Tiger/Line Shapefiles.][7]  The American Community Survey data was downloaded from the United States Census Bureau using the [American Community Survey 5-Year Estimates - Geodatabase Format][9].  Once the geodatabase was imported into ArcGIS for Desktop, the shapefile and table was exported to a shapefile and a csv file.
+
+[Back to top][49]
 
 By: Jena
 
