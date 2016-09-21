@@ -1,0 +1,35 @@
+#GOAL:  Create a hillshade raster from a DEM raster.
+
+#Import the Raleigh DEM
+WilmTrc <- raster("data/Wilm_Tracts.tif")
+
+#View Wilmington area DEM
+plot(WilmTrc)
+
+#Find out the different types of merge raster tools you can use
+find_algorithms(search_term = "hillshade", qgis_env = my_env)
+
+#Set the parameters to the hillshade tool
+paramHILLSHADE <- get_args_man(alg = "gdalogr:hillshade", 
+                             qgis_env = my_env)
+
+#Set hillshade parameters
+paramHILLSHADE$INPUT <- WilmTrc
+paramHILLSHADE$OUTPUT <- file.path("D:/LearnR", "HillWilm.tif")
+
+#Run the tool
+ResultHILL <- run_qgis(alg = "gdalogr:hillshade",
+                          params = paramHILLSHADE,
+                          load_output = paramHILLSHADE$OUTPUT,
+                          qgis_env = my_env)
+
+#View the result...however the results do not look like a typical gray
+#scale hillshade map.
+plot(ResultHILL)
+
+#So create a gray color palette
+mypal <- gray.colors(17)
+
+#And plot the result with the gray color palette you created
+plot(ResultHILL, col = mypal,
+     main = "Hillshade of Wilmington")
