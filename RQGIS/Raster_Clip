@@ -1,0 +1,37 @@
+#GOAL:  Extract raster data by a shapefile boundary.  This script will take
+#a square dem file and clip it to the shape of Wake County, North Carolina
+
+
+#Import Wake County shapefile
+Wake = readOGR(dsn = "data/Wake_County.shp", layer = "Wake_County")
+
+#Import the Raleigh DEM
+Raleigh <- raster("data/Raleigh.tif")
+
+#view the Raleigh DEM
+plot(Raleigh)
+
+#Find out the different types of extract by mask tools you can use
+find_algorithms(search_term = "clip raster", qgis_env = my_env)
+
+#Set the parameters to SAGA's "Clip Grid with Polygon" tool
+paramEXTRACT <- get_args_man(alg = "saga:clipgridwithpolygon", 
+                             qgis_env = my_env)
+
+#View the parameters you need to set
+paramEXTRACT
+
+#Set the parameters.  
+paramEXTRACT$INPUT <- Raleigh
+paramEXTRACT$POLYGONS <- Wake
+paramEXTRACT$OUTPUT <- file.path("D:/LearnR", "Mask.tif")
+
+#Run the tool
+ResultEXTRACT <- run_qgis(alg = "saga:clipgridwithpolygon",
+                          params = paramEXTRACT,
+                          load_output = paramEXTRACT$OUTPUT,
+                          qgis_env = my_env)
+
+#View the map (NOTE: The northern part of the dem is cut off because the
+#DEM did not extend farther north)
+plot(ResultEXTRACT)
