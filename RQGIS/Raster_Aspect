@@ -1,0 +1,55 @@
+#GOAL:  Generate a raster with aspect values (north, south, etc.)
+
+#Raster data
+Wilm <- raster("data/Wilington.tif")
+
+#View original DEM
+plot(Wilm)
+
+#Find out the different types of aspect tools you can use
+find_algorithms(search_term = "aspect", qgis_env = my_env)
+
+#Create a parameters list to 
+paramASPECT <- get_args_man(alg = "gdalogr:aspect", qgis_env = my_env)
+
+#View paramters you need to set
+paramASPECT
+
+#Set the parameters
+paramASPECT$INPUT <- Wilm
+paramASPECT$OUTPUT <- file.path("D:/LearnR/", "WilAsp2.tif")
+
+#Run the tool
+ResultASPECT <- run_qgis(alg = "gdalogr:aspect",
+                         params = paramASPECT,
+                         load_output = paramASPECT$OUTPUT,
+                         qgis_env = my_env)
+
+#View the result...the color scheme does not show the aspect, but the data
+#is correct.
+plot(ResultASPECT)
+
+
+#Define the usual aspect color scheme using breaks to create a plot.
+###This plot does not look good due to the scale.  However, the primary 
+###reason to creating this plot is to verify that the tool worked.
+
+#First define the number of colors and the color scheme you want
+col = rainbow(11)
+colors <- c("red", "orange", "yellow", "green", "light blue", "blue",
+            "dark blue", "pink", "red")
+
+#Define the breaks (12 breaks = 11 segments)
+brk <- c(22.5, 67.5, 112.5, 157.5, 202.5, 247.5, 292.5, 337.5, 360)
+
+#Map the aspect with the correct color scheme and breaks, but turn off
+#the default legend.  You will create a custom legend below
+plot(ResultASPECT, col = colors, breaks = brk, 
+     main = "Aspect of Wilmington", legend = FALSE)
+
+#Create custom legend.  First specify where you want the legend to go
+#and then write the labels for the breaks.
+legend("bottomright", legend = c("North", "Northeast",
+                              "East", "Southeast", "South",
+                              "Southwest", "West", "Northwest",
+                              "North"), fill = colors)
