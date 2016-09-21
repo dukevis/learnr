@@ -1,0 +1,40 @@
+#GOAL:  Map the states of the US and create a point shapefile of the middle 
+#of each state
+
+#Get United States shapefile
+US <- readOGR(dsn = "data/UnitedStates.shp", layer = "UnitedStates")
+
+#View the US
+plot(US)
+
+
+#If unfamilliar with the tool parameters, view which parameters we need to set
+#using this code
+get_usage(alg = "qgis:polygoncentroids",
+          qgis_env = my_env,
+          intern = TRUE)
+
+
+#Name a variable and get the tool you want using your QGIS environment
+paramsUS <- get_args_man(alg = "qgis:polygoncentroids", 
+                         qgis_env = my_env)
+
+#View parameters
+paramsUS
+
+#Set the parameters
+paramsUS$INPUT_LAYER <- US
+paramsUS$OUTPUT_LAYER <- "US_Centroid.shp"
+
+#Run the tool
+UScent <- run_qgis(alg = "qgis:polygoncentroids",
+                   params = paramsUS,
+                   load_output = paramsUS$OUTPUT_LAYER,
+                   qgis_env = my_env)
+
+#Plot the centroids and US using the following code
+#Plot the US
+plot(US)
+
+#Then plot the centroids of the US created by QGIS tool
+plot(UScent, pch = 21, add = TRUE, bg = "lightblue", col = "black")
