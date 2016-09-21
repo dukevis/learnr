@@ -1,0 +1,43 @@
+#GOAL:  Create a raster of slope for the Raleigh area.
+
+#Get the Raleigh DEM
+Raleigh <- raster("data/Raleigh.tif")
+
+#Preview the DEM
+plot(Raleigh)
+
+#Find out the different types of slope tools you can use
+find_algorithms(search_term = "slope", qgis_env = my_env)
+
+#Set the parameters to gdalogr:slope
+paramSLOPE <- get_args_man(alg = "gdalogr:slope", qgis_env = my_env)
+
+#View the parameters you need to set
+paramSLOPE
+
+#Set the parameters.  
+####NOTE:  the tool will automatically calculate the slope by degrees.
+####To change to percent change the "paramSLOPE$AS_PERCENT" parameter to TRUE
+paramSLOPE$INPUT <- Raleigh
+#paramSLOPE$AS_PERCENT <- "TRUE"
+paramSLOPE$OUTPUT <- file.path("D:/LearnR", "Ral_Slope.tif")
+
+#Run the tool
+ResultSLOPE <- run_qgis(alg = "gdalogr:slope",
+                           params = paramSLOPE,
+                           load_output = paramSLOPE$OUTPUT,
+                           qgis_env = my_env)
+
+#View the map, but nothing looks that different....
+plot(ResultSLOPE)
+
+#Define the color scheme
+col = terrain.colors(11)
+
+#Define the breaks 
+brk <- c(0.83, 2.29, 3.75, 5.42, 7.30, 9.8, 13.7, 24.41, 53.2)
+
+#View the result.  Note the white space has a value between 0 and 0.83
+#Again, the map does not look good, but is supposed to show that the tool works.
+plot(ResultSLOPE, col = col, breaks = brk,
+     main = "Raleigh Slope (degree)")
