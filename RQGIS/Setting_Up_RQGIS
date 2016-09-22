@@ -5,8 +5,13 @@
 #C:\Program Files\QGIS 2.14\apps\qgis\python\plugins\GdalTools\tools
 #C:\Program Files\QGIS 2.14\apps\qgis\python\plugins\processing\algs\grass\description
 
-#install RQGIS package
+#install all packages that are used in this tutorial
 install.packages("rgeos")
+install.packages("RQGIS")
+install.packages("raster")
+install.packages("rgdal")
+install.packages("maptools")
+
 library(RQGIS)
 library(raster)
 library(rgdal)
