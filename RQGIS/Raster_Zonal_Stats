@@ -1,0 +1,50 @@
+#Goal:  Obtain zonal statistics from a DEM to census tracts in Wake County, NC
+#Note:  You need to create an empty shapefile of census tracts (copy or create)
+#or you can write over the orginal shapefile.
+
+#Import the Raleigh DEM
+Raleigh <- raster("data/Raleigh.tif")
+
+#Import Wake County shapefile
+WakeTR = readOGR(dsn = "data/Wake_Tracts.shp", layer = "Wake_Tracts")
+
+#View both vector and raster files
+plot(Raleigh)
+plot(WakeTR)
+
+#Copy the WakeTR shapefile to a new folder in your project (tempdir) and 
+#call it "ZONALwk"
+writeOGR(WakeTR, "tempdir", "ZONALwk", driver = "ESRI Shapefile")
+
+#Find out the different types of zonal statistics tools you can use
+find_algorithms(search_term = "zonal", qgis_env = my_env)
+
+#Set the parameters to "qgis:zonalstatistics" tool
+paramZONAL <- get_args_man(alg = "qgis:zonalstatistics", 
+                           qgis_env = my_env)
+
+#Set the parameters.  The result will be a new shapefile with attribute
+#information appended to the end of the attribute table
+paramZONAL$INPUT_RASTER <- Raleigh
+paramZONAL$INPUT_VECTOR <- WakeTR
+paramZONAL$COLUMN_PREFIX <- "DEM_"
+paramZONAL$OUTPUT_LAYER <- file.path("tempdir", "ZONALwk.shp")
+
+#Run the tool
+ResultZONAL <- run_qgis(alg = "qgis:zonalstatistics",
+                        params = paramZONAL,
+                        load_output = paramZONAL$OUTPUT_LAYER,
+                        qgis_env = my_env)
+
+#Import resulting shapefile.  The previously used readOGR code will not work 
+#in this #case.  You will need to expand the path and then call the layer.
+ZonalWk <- readOGR(dsn=path.expand("tempdir"), layer = "ZONALwk")
+
+#View the shapefile attribute table 
+summary(ZonalWk)
+
+#Read entire attribute table
+data.frame(ZonalWk)
+
+#Plot census tracts by the mean DEM
+spplot(ZonalWk, z = "DEM_mean", cuts = 4)
