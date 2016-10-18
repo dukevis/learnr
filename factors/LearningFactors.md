@@ -1,11 +1,11 @@
-Learning Factors
+Factors and Analyzing Categorical Data
 ================
 
 ``` r
 # Data downloaded from https://opendurham.nc.gov/explore/dataset/north_carolina_bicycle_crash_data_heatmap_/?tab=metas
 # Data load code from http://www2.stat.duke.edu/~mc301/data/nc_bike_crash.html
 
-bike <- read.csv("https://stat.duke.edu/~mc301/data/nc_bike_crash.csv", 
+bike <- read.csv("north_carolina_bicycle_crash_data_heatmap_.csv", 
                  sep = ";", stringsAsFactors = FALSE, na.strings = c("NA", "", ".", "/Missing"))
 ```
 
@@ -16,8 +16,7 @@ Categorical, or discrete, variables can be either nominal (e.g., male/female) or
 
 In R, factors are a way of specifying some extra information about categorical variables that might be useful for data analysis or visualization. The primary information you might want to specify are **levels**, **labels**, and whether the factor should be considered **ordered**.
 
-Creating a factor
------------------
+### Creating a factor
 
 The basic process of creating a factor is sending a vector of values to the `factor()` command.
 
@@ -47,8 +46,7 @@ Since we didn't pass the function any additional information about these data, R
 
 For many categorical variables, this default behavior may be fine. If you know additional information about your data, however, it may be better to add levels or labels manually, or to specify that the levels are ordered. (For this reason, it is often a good idea to prevent R from converting character variables to factors on data import. Use the `stringsAsFactors = FALSE` option when reading csv files, etc.)
 
-Levels
-------
+### Levels
 
 You can specify any order for the levels; you don't have to be locked into alphabetical order. One reason you may want an alternative order for the levels is that the categories have a **natural order** -- for example, the months of the year.
 
@@ -111,8 +109,7 @@ barplot(table(bike$Bike_Race))
 
 ![](LearningFactors_files/figure-markdown_github/unnamed-chunk-6-2.png)
 
-Labels
-------
+### Labels
 
 Labels can be used if you want just want to rename the original category names. This is common when a number code is used for categories, but it can also come in handy with data values that start out as text.
 
@@ -134,8 +131,7 @@ mons.factor
 
 Note that even when you just type the name of the variable to view the data in the factor, the data values are displayed with the labels you have specified.
 
-Ordered
--------
+### Ordered
 
 The `ordered` attribute can be specified as *TRUE* or *FALSE*. By default, it is set to FALSE. You may want to set the value to TRUE for variables that are truly ordinal - that is, when there is a natural ordering that is not dependent on the frequency of the category.
 
@@ -182,7 +178,97 @@ So, even if we have specified an order for the levels, it's not truly "ordered" 
 
 The order of the levels is useful for display in tables or charts, but you should only set it as an ordered factor if there is a natural ordering. That distinction may make a difference for certain types of analysis.
 
-When to use factors?
---------------------
+### When to use factors?
 
-As we've said, factors are useful for tables and plot. In additiona, some analysis functions like regressions actually do pay attention to factors. For example, when you use a factor as an independent variable for a regression, R knows to create [dummy variables](https://www.r-bloggers.com/data-types-part-3-factors/) of the categories.
+As we've said, factors are useful for tables and plot. In addition, some analysis functions like regressions actually do pay attention to factors. For example, when you use a factor as an independent variable for a regression, R knows to create [dummy variables](https://www.r-bloggers.com/data-types-part-3-factors/) of the categories. To learn more about using categorical variables in a regression analyis, you may enjoy this article on [contrast coding systems](http://www.ats.ucla.edu/stat/r/library/contrast_coding.htm).
+
+Analyzing Categorical Data
+--------------------------
+
+The first step to analyzing categorical data is to establish how many observations are present in each category.
+
+*Hat-tip to UCLA for the notes from its [Introductory R Class](http://statistics.ats.ucla.edu/stat/r/seminars/intro.htm).*
+
+``` r
+table(race)
+```
+
+    ## race
+    ##           White           Black        Hispanic Native American 
+    ##            3111            2006             297              67 
+    ##           Asian           Other 
+    ##              56              48
+
+### Are my data evenly distributed across categories within one categorical variable?
+
+Suppose you want to see if one of your categories is more frequent in your than you might expect based on the real world. For example, let's say you want to test if you have a fair coin, so you flip it a bunch of times and list out the results. To analyze a single categorical variable like this, you may want to perform a **Pearson's Chi-square Goodness of Fit** test. When you run a Chi-square test on a single variable, it will see if the distribution of data across the categories is equal (e.g., 50/50 for two categories, 33/33/33 for three categories). Alternately, if you know that in the real world your data should be divided 60/40, you can provide this information to the test. Then, the test will see if your data deviate from this known distribution.
+
+### Summarizing two categorical variables
+
+You can also cross-tabulate categorical data. A cross-tab is a table where you use one categorical variable for the rows and another for the columns, and then each cell displays the number of observations that are assigned both categories. This kind of table is also called a contingency table, which can also be used as an input to certain statistical tests.
+
+``` r
+race_by_injury <- xtabs(~ Bike_Race + Bike_Injur, data=bike)
+
+race_by_injury
+```
+
+    ##                  Bike_Injur
+    ## Bike_Race         A: Disabling Injury B: Evident Injury C: Possible Injury
+    ##   Asian                             0                24                 29
+    ##   Black                           100               705                932
+    ##   Hispanic                         19               145                 97
+    ##   Native American                   4                23                 29
+    ##   Other                             5                14                 18
+    ##   White                           163              1481               1084
+    ##                  Bike_Injur
+    ## Bike_Race         Injury K: Killed O: No Injury
+    ##   Asian                1         0            2
+    ##   Black               30        41          198
+    ##   Hispanic             6         4           26
+    ##   Native American      1         6            4
+    ##   Other                1         0           10
+    ##   White               37        72          274
+
+### Are two categorical variables "correlated"?
+
+One common statistical test that is applied to a cross-tab of two categorical variables is a **Pearson's Chi-square Test of Independence**. It's basically the same test mentioned above, but this time you apply it to two categorical variables. In a way, this measures whether there is some correlation or interaction between the two categorical variables. That is, it tests if the distribution of data across the categories of one variable is different for different categories of the other variable. *Note: This is the interpretation of someone not well trained in this area! Please take with a grain of salt!*
+
+``` r
+chisq.test(race_by_injury)
+```
+
+    ## Warning in chisq.test(race_by_injury): Chi-squared approximation may be
+    ## incorrect
+
+    ## 
+    ##  Pearson's Chi-squared test
+    ## 
+    ## data:  race_by_injury
+    ## X-squared = 135.32, df = 25, p-value < 2.2e-16
+
+``` r
+# Note: p-values are falling out of favor in science, 
+# but typically you look for a p-value < 0.05, or even smaller.
+```
+
+An alternative test is **Fisher's exact test** (in R, `fisher.test`), which should be used instead of the chi-square test for small sample sizes. Of course, any of these test have basic assumptions that need to be met before you apply the test. (For example, the categories must not overlap; an observation should be assigned to only one category for each variable.) For details about these tests and their assumptions, see the **References** section below for introductory texts.
+
+### How can I predict a binary outcome (e.g., spam/not spam) based on other measured variables?
+
+This may be a job for **logistic regression**, a special kind of regression designed for an outcome variable that is not just categorical but specifically binary. Note: this method can be generalized to outcome variables that have more than two categories (multinomial logistic regression for nominal variables, ordinal logistic regression for ordered variables).
+
+### Advanced: Do observations cluster nicely based on the categorical data values?
+
+If you have observations that have been measured along a series of categorical variables, you may be interested in doing some kind of exploratory factor analysis. Some types of algorithms that look for patterns in large tables of data, like Principal Components Analysis (PCA), only work on numerical variables. To run a similar process on categorical data, it is not enough to change the categories into numbers. If they're really categories, pretending like they're numbers is only going to give you unreliable results.
+
+Instead, you will use something like Correspondence Analysis or one of the types of factor analysis that allows for categorical data (e.g., Multiple Factor Analysis in FactoMineR). The MASS and FactoMineR packages in R offer many options.
+
+References
+----------
+
+1.  [Introducing R](http://www.ats.ucla.edu/stat/r/seminars/intro.htm), Statistical Consulting Group, UCLA Institute for Digital Research & Education
+2.  [R Learning Module - Factor variables](http://www.ats.ucla.edu/stat/r/modules/factor_variables.htm), Statistical Consulting Group, UCLA Institute for Digital Research & Education
+3.  [What statistical analysis should I use?](http://www.ats.ucla.edu/stat/mult_pkg/whatstat/), Statistical Consulting Group, UCLA Institute for Digital Research & Education
+4.  [OpenIntro Statistics](https://www.openintro.org/stat/textbook.php)
+5.  An introduction to categorical data analysis, Alan Agresti ([Duke ebrary edition](http://search.library.duke.edu/search?id=DUKE005142588), [Duke EBL edition](http://search.library.duke.edu/search?id=DUKE005788503))
